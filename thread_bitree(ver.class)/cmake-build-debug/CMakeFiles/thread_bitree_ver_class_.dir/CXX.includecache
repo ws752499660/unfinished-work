@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/data_struct/thread_bitree(ver.class)/class/btnode.cpp
+btnode.h
+D:/data_struct/thread_bitree(ver.class)/class/btnode.h
+
+D:/data_struct/thread_bitree(ver.class)/class/btnode.h
+iostream
+-
+cstdio
+-
+
+D:/data_struct/thread_bitree(ver.class)/class/threadbitree.cpp
+threadbitree.h
+D:/data_struct/thread_bitree(ver.class)/class/threadbitree.h
+
+D:/data_struct/thread_bitree(ver.class)/class/threadbitree.h
+
+D:/data_struct/thread_bitree(ver.class)/main.cpp
+iostream
+-
+class/btnode.h
+D:/data_struct/thread_bitree(ver.class)/class/btnode.h
+

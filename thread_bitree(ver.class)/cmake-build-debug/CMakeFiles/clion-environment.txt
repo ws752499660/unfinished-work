@@ -1,0 +1,3 @@
+ToolSet: 3.20@D:\vs\MinGW
+Options: 
+CMake: 3.9.6@D:\Program Files\CMake\bin\cmake.exe
