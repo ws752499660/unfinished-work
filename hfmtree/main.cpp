@@ -14,38 +14,33 @@ typedef char **huffmancode;
 
 void select(huffmantree ht,int n,int &s1,int &s2)
 {
-    int min=ht[1].weight,min_no,i;
+    struct htline
+    {
+        htnode tree;
+        int loc;
+    };
+    htline *line=new htline[n+1];   //same as huffmantree,No.0 will not be used
+    int i;
     for(i=1;i<=n;i++)
     {
-        if(min>=ht[i].weight && ht[i].parent==0)
+        if(line[i].tree.parent==0)
         {
-            min=ht[i].weight;
-            s1=i;
+            line[i].tree = ht[i];
+            line[i].loc = i;
         }
     }
-    min_no=i;
-    int min2=ht[1].weight;
-    i=1;
-    while(min2==ht[min_no].weight)
-    {
-        i++;
-        min2=ht[i].weight;
-    }
-    for(i=1;i<=n;i++)
-    {
-        if (i != min_no)
+    for(i=1;i<n;i++)           //使用冒泡排序法
+        for(int j=1;j<=n-i;j++)
         {
-            if (ht[i].weight == min)
-                continue;
-            if (min2>=ht[i].weight && ht[i].parent == 0)
+            if(line[j].tree.weight>line[j+1].tree.weight)
             {
-                min2 = ht[i].weight;
-                s2 = i;
+                htline t;
+                t=line[j];
+                line[j]=line[j+1];
+                line[j+1]=t;
             }
         }
-        else
-            continue;
-    }
+
 }
 
 void create_huffmantree(huffmantree &ht,int *w,int n)
