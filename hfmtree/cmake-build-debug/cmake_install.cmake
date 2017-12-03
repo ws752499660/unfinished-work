@@ -1,4 +1,4 @@
-# Install script for directory: E:/git/unfinished-work/hfmtree
+# Install script for directory: D:/git/unfinished-work/hfmtree
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "E:/git/unfinished-work/hfmtree/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/git/unfinished-work/hfmtree/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
