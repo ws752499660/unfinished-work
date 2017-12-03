@@ -19,28 +19,33 @@ void select(huffmantree ht,int n,int &s1,int &s2)
         htnode tree;
         int loc;
     };
-    htline *line=new htline[n+1];   //same as huffmantree,No.0 will not be used
-    int i;
+    int q=0,i;
+    for(i=1;i<=n;i++)
+        if(ht[i].parent==0)
+            q++;
+    htline *line=new htline[q+1];
+    q=1;
     for(i=1;i<=n;i++)
     {
-        if(line[i].tree.parent==0)
+        if(ht[i].parent==0)
         {
-            line[i].tree = ht[i];
-            line[i].loc = i;
+            line[q].tree=ht[i];
+            line[q].loc=i;
+            q++;
         }
     }
-    for(i=1;i<n;i++)           //使用冒泡排序法
-        for(int j=1;j<=n-i;j++)
+    for(i=1;i<=q-1;i++)
+        for(int j=1;j<q-i;j++)
         {
-            if(line[j].tree.weight>line[j+1].tree.weight)
+            if(line[j].tree.weight>=line[j+1].tree.weight)
             {
-                htline t;
-                t=line[j];
+                htline t=line[j];
                 line[j]=line[j+1];
                 line[j+1]=t;
             }
         }
-
+    s1=line[1].loc;
+    s2=line[2].loc;
 }
 
 void create_huffmantree(huffmantree &ht,int *w,int n)
