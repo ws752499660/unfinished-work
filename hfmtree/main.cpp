@@ -10,7 +10,11 @@ typedef struct htnode
     int parent,lkid,rkid;
 }*huffmantree;
 
-typedef char **huffmancode;
+typedef struct hfcodenode
+{
+    char codename;
+    char *code;
+}*huffmancode;
 
 void select(huffmantree ht,int n,int &s1,int &s2)
 {
@@ -79,32 +83,32 @@ void create_huffmantree(huffmantree &ht,int *w,int n)
         ht[i].rkid=s2;
         ht[i].weight=ht[s1].weight+ht[s2].weight;
     }
-    //ofstream out ("E:\\data_struct\\hfmtree\\out.txt");
+    ofstream out ("out.txt");
     for(i=1;i<=m;i++)
     {
-        cout<<ht[i].weight<<" ";
+        out<<ht[i].weight<<" ";
     }
-    cout<<endl;
+    out<<endl;
     for(i=1;i<=m;i++)
     {
-        cout<<ht[i].parent<<" ";
+        out<<ht[i].parent<<" ";
     }
-    cout<<endl;
+    out<<endl;
     for(i=1;i<=m;i++)
     {
-        cout<<ht[i].lkid<<" ";
+        out<<ht[i].lkid<<" ";
     }
-    cout<<endl;
+    out<<endl;
     for(i=1;i<=m;i++)
     {
-        cout<<ht[i].rkid<<" ";
+        out<<ht[i].rkid<<" ";
     }
 }
 
-void create_huffmancode(huffmantree &ht,huffmancode &hc,int n)
+void create_huffmancode(huffmantree &ht,huffmancode &hc,int n,char *cline)
 {
 
-    hc=new char*[n+1];
+    hc=new hfcodenode[n+1];
     char *cd=new char[n]; //code workspace
     cd[n-1]='\0';
     for(int i=1;i<=n;i++)
@@ -121,8 +125,9 @@ void create_huffmancode(huffmantree &ht,huffmancode &hc,int n)
             c=f;
             f=ht[c].parent;
         }
-        hc[i]=new char[n-start];
-        strcpy(hc[i],&cd[start]);
+        hc[i].code=new char[n-start];
+        strcpy(hc[i].code,&cd[start]);
+        hc[i].codename=cline[i-1];
     }
     delete(cd);
 }
@@ -137,6 +142,23 @@ int main()
         cin>>w[i];
     cin>>cline;
     huffmantree ht;
+    huffmancode hc;
     create_huffmantree(ht,w,n);
+    create_huffmancode(ht,hc,n,cline);
+    for(int i=1;i<=n;i++)
+        cout<<hc[i].codename<<" ";
+    cout<<endl;
+    int j=1;
+    for(int i=1;i<=n;i++)
+    {
+        j = 1;
+        while (hc[i].code[j] =='0'|| hc[i].code[j]=='1')
+        {
+            cout << hc[i].code[j];
+            j++;
+        }
+        cout<<" ";
+    }
+    cout<<endl;
     return 0;
 }
