@@ -132,6 +132,27 @@ void create_huffmancode(huffmantree &ht,huffmancode &hc,int n,char *cline)
     delete(cd);
 }
 
+void encoding(huffmancode hc,int n)
+{
+    ifstream in ("text.txt");
+    ofstream out ("aftercode.txt");
+    char ch;
+    int i=1,j=1;
+    while(in.get(ch))
+    {
+        for(i=1;i<=n;i++)
+            if(ch==hc[i].codename)
+            {
+                while (hc[i].code[j] == '0' || hc[i].code[j] == '1')
+                {
+                    out << hc[i].code[j];
+                    j++;
+                }
+                j = 1;
+            }
+    }
+}
+
 int main()
 {
     int n,*w;
@@ -141,13 +162,16 @@ int main()
     for(int i=0;i<n;i++)
         cin>>w[i];
     cin>>cline;
+
     huffmantree ht;
     huffmancode hc;
     create_huffmantree(ht,w,n);
     create_huffmancode(ht,hc,n,cline);
+
     for(int i=1;i<=n;i++)
         cout<<hc[i].codename<<" ";
     cout<<endl;
+
     int j=1;
     for(int i=1;i<=n;i++)
     {
@@ -160,5 +184,8 @@ int main()
         cout<<" ";
     }
     cout<<endl;
+
+    encoding(hc,n);
+
     return 0;
 }
