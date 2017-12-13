@@ -7,6 +7,7 @@ typedef struct htnode
 {
     int weight;
     int parent,lkid,rkid;
+    char name;
 }*huffmantree;
 
 typedef struct hfcodenode
@@ -52,7 +53,7 @@ void select(huffmantree ht,int n,int &s1,int &s2)
     delete line;
 }
 
-void create_huffmantree(huffmantree &ht,int *w,int n)
+void create_huffmantree(huffmantree &ht,int *w,int n,char *cline)
 {
     if(n<=1)
         return;
@@ -62,6 +63,7 @@ void create_huffmantree(huffmantree &ht,int *w,int n)
     for(i=1;i<=n;i++)
     {
         ht[i].weight=w[i-1];
+        ht[i].name=cline[i-1];
         ht[i].parent=0;
         ht[i].lkid=0;
         ht[i].rkid=0;
@@ -69,6 +71,7 @@ void create_huffmantree(huffmantree &ht,int *w,int n)
     for(;i<=m;i++)
     {
         ht[i].weight=0;
+        ht[i].name='#';
         ht[i].parent=0;
         ht[i].lkid=0;
         ht[i].rkid=0;
@@ -102,6 +105,11 @@ void create_huffmantree(huffmantree &ht,int *w,int n)
     for(i=1;i<=m;i++)
     {
         out<<ht[i].rkid<<" ";
+    }
+    out<<endl;
+    for(i=1;i<=m;i++)
+    {
+        out<<ht[i].name<<" ";
     }
 }
 
@@ -165,17 +173,22 @@ void decoding(huffmantree ht,int n)
 {
     ifstream in("aftercode.txt");
     ofstream out("afterdecode.txt");
-    int flag=0;
-    int read_char;
-    int point=1;
-    while()
+    char read_char;
+    int point=2*n-1;
+    while(in.get(read_char))
     {
-        in.get(read_char);
         if(read_char=='0')
             point=ht[point].lkid;
         else
             point=ht[point].rkid;
+        if(ht[point].name!='#')
+        {
+            out<<ht[point].name;
+            point=2*n-1;
+        }
     }
+    out.close();
+    in.close();
 }
 
 int main()
@@ -197,7 +210,7 @@ int main()
 
     huffmantree ht;
     huffmancode hc;
-    create_huffmantree(ht,w,n);
+    create_huffmantree(ht,w,n,cline);
     create_huffmancode(ht,hc,n,cline);
 
     for(i=1;i<=n;i++)
@@ -218,6 +231,7 @@ int main()
     cout<<endl;
 
     encoding(hc,n);
+    decoding(ht,n);
 
     return 0;
 }
