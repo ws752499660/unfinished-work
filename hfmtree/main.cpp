@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
 
 using namespace std;
 
@@ -50,6 +49,7 @@ void select(huffmantree ht,int n,int &s1,int &s2)
         }
     s1=line[1].loc;
     s2=line[2].loc;
+    delete line;
 }
 
 void create_huffmantree(huffmantree &ht,int *w,int n)
@@ -125,11 +125,19 @@ void create_huffmancode(huffmantree &ht,huffmancode &hc,int n,char *cline)
             c=f;
             f=ht[c].parent;
         }
+        start++;
         hc[i].code=new char[n-start];
-        strcpy(hc[i].code,&cd[start]);
+        //strcpy(hc[i].code,&cd[start]);
+        int j=1;
+        while(cd[start]=='0'||cd[start]=='1')
+        {
+            hc[i].code[j]=cd[start];
+            j++;
+            start++;
+        }
         hc[i].codename=cline[i-1];
     }
-    delete(cd);
+    delete cd;
 }
 
 void encoding(huffmancode hc,int n)
@@ -153,32 +161,56 @@ void encoding(huffmancode hc,int n)
     }
 }
 
+void decoding(huffmantree ht,int n)
+{
+    ifstream in("aftercode.txt");
+    ofstream out("afterdecode.txt");
+    int flag=0;
+    int read_char;
+    int point=1;
+    while()
+    {
+        in.get(read_char);
+        if(read_char=='0')
+            point=ht[point].lkid;
+        else
+            point=ht[point].rkid;
+    }
+}
+
 int main()
 {
-    int n,*w;
+    int n,*w,i;
     cin>>n;
     w=new int[n];
+    char c;
     char *cline=new char[n];
-    for(int i=0;i<n;i++)
+    //cin.clear();
+    getchar(); //吃掉回车
+    for(i=0;i<n;i++)
+    {
+        c=getchar();
+        cline[i]=c;
+    }
+    for(i=0;i<n;i++)
         cin>>w[i];
-    cin>>cline;
 
     huffmantree ht;
     huffmancode hc;
     create_huffmantree(ht,w,n);
     create_huffmancode(ht,hc,n,cline);
 
-    for(int i=1;i<=n;i++)
+    for(i=1;i<=n;i++)
         cout<<hc[i].codename<<" ";
     cout<<endl;
 
     int j=1;
-    for(int i=1;i<=n;i++)
+    for(i=1;i<=n;i++)
     {
         j = 1;
-        while (hc[i].code[j] =='0'|| hc[i].code[j]=='1')
+        while (hc[i].code[j]=='0'|| hc[i].code[j]=='1')
         {
-            cout << hc[i].code[j];
+            cout<<hc[i].code[j];
             j++;
         }
         cout<<" ";
