@@ -1,19 +1,61 @@
 #include <iostream>
 using namespace std;
 
-void creategraph(int **&g,int &n,int &m)
+struct node
 {
-    cin>>n>>m;
+    int data;
+    int loc;
+};
+
+int pickloc(int data,node *l,int n)
+{
+    for(int i=0;i<n;i++)
+        if(l[i].data==data)
+            return l[i].loc;
+}
+
+void creategraph(int **&g,int n,int m)
+{
     int i,j;
     g=new int*[n];
     for(i=0;i<n;i++)
         g[i]=new int[m];
-    for(i=0;i<n;i++)
-        for(j=0;j<m;j++)
-            cin>>g[i][j];
 }
 
-bool DC_check(int **g,int n,int m)    //æ£€æµ‹å¯¹ç§°æ€§
+void createlist(int &n,int &m,int **&g)
+{
+    cout<<"ÇëÊäÈë¼¯ºÏ1£¬¼¯ºÏ2µÄÔªËØ¸öÊı£º"<< endl;
+    cin>>n>>m;
+    int i;
+    node *l1=new node[n];
+    node *l2=new node[m];
+    cout<<"ÇëÊäÈë¼¯ºÏ1µÄÔªËØ"<<endl;
+    for(i=0;i<n;i++)
+    {
+        cin>>l1[i].data;
+        l1[i].loc=i;
+    }
+    cout<<"ÇëÊäÈë¼¯ºÏ2µÄÔªËØ"<<endl;
+    for(i=0;i<m;i++)
+    {
+        cin>>l2[i].data;
+        l2[i].loc=i;
+    }
+    cout<<"ÇëÊäÈë¶şÔª¹ØÏµ,ÊäÈë'# #'½áÊø"<<endl;
+    creategraph(g,n,m);
+    char put1,put2;
+    while(true)
+    {
+        cin>>put1>>put2;
+        if(put1=='#')
+            break;
+        int q=pickloc(put1-'0',l1,n);
+        int p=pickloc(put2-'0',l2,m);
+        g[q][p]=1;
+    }
+}
+
+bool DC_check(int **g,int n,int m)    //¼ì²â¶Ô³ÆĞÔ
 {
     int i=0,j=0;
     bool flag[6]={false};
@@ -30,7 +72,7 @@ bool DC_check(int **g,int n,int m)    //æ£€æµ‹å¯¹ç§°æ€§
     return true;
 }
 
-bool ZF_check(int **g,int n,int m)    //æ£€æµ‹è‡ªåæ€§
+bool ZF_check(int **g,int n,int m)    //¼ì²â×Ô·´ĞÔ
 {
     int i,flag=0;
     if(m>n) n=m;
@@ -45,7 +87,7 @@ bool ZF_check(int **g,int n,int m)    //æ£€æµ‹è‡ªåæ€§
         return false;
 }
 
-bool CD_check(int **g,int n,int m)    //æ£€æµ‹ä¼ é€’æ€§
+bool CD_check(int **g,int n,int m)    //¼ì²â´«µİĞÔ
 {
     int i,j,t;
     for(i=0;i<n;i++)
@@ -64,12 +106,12 @@ bool CD_check(int **g,int n,int m)    //æ£€æµ‹ä¼ é€’æ€§
 int main() {
     int **g;
     int n,m;
-    creategraph(g,n,m); //åˆ›å»ºä¸€ä¸ªå…³ç³»çŸ©é˜µ
+    createlist(n,m,g); //´´½¨Ò»¸ö¹ØÏµ¾ØÕó
     if(DC_check(g,n,m))
-        cout<<"è¯¥å…³ç³»å…·æœ‰å¯¹ç§°æ€§"<<endl;
+        cout<<"¸Ã¹ØÏµ¾ßÓĞ¶Ô³ÆĞÔ"<<endl;
     if(ZF_check(g,n,m))
-        cout<<"è¯¥å…³ç³»å…·æœ‰è‡ªåæ€§"<<endl;
+        cout<<"¸Ã¹ØÏµ¾ßÓĞ×Ô·´ĞÔ"<<endl;
     if(CD_check(g,n,m))
-        cout<<"è¯¥å…³ç³»å…·æœ‰å¯¹ç§°æ€§"<<endl;
+        cout<<"¸Ã¹ØÏµ¾ßÓĞ´«µİĞÔ"<<endl;
     return 0;
 }
