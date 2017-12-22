@@ -3,31 +3,31 @@ using namespace std;
 
 struct node
 {
-    int data;
-    int loc;
+    int data;   //元素自身
+    int loc;    //元素在集合中的位置（下标）
 };
 
-int pickloc(int data,node *l,int n)
+int pickloc(int data,node *l,int n) //根据一个元素找出其在集合中的位置
 {
     for(int i=0;i<n;i++)
         if(l[i].data==data)
             return l[i].loc;
 }
 
-void creategraph(int **&g,int n,int m)
+void creategraph(int **&g,int n,int m)  //创建一个n*m的二维指针
 {
-    int i,j;
+    int i;
     g=new int*[n];
     for(i=0;i<n;i++)
         g[i]=new int[m];
 }
 
-void createlist(int &n,int &m,int **&g)
+void createlist(int &n,int &m,int **&g) //根据输入的信息创建关系矩阵
 {
     cout<<"请输入集合1，集合2的元素个数："<< endl;
     cin>>n>>m;
     int i;
-    node *l1=new node[n];
+    node *l1=new node[n];   //存放集合中各个元素结构体的数组
     node *l2=new node[m];
     cout<<"请输入集合1的元素"<<endl;
     for(i=0;i<n;i++)
@@ -41,16 +41,17 @@ void createlist(int &n,int &m,int **&g)
         cin>>l2[i].data;
         l2[i].loc=i;
     }
-    cout<<"请输入二元关系,输入'# #'结束"<<endl;
     creategraph(g,n,m);
-    char put1,put2;
-    while(true)
+    cout<<"请输入关系的数量:"<<endl;
+    int t;
+    cin>>t;
+    cout<<"请输入关系："<<endl;
+    int put1,put2; //用于输入关系
+    for(i=0;i<t;i++)
     {
         cin>>put1>>put2;
-        if(put1=='#')
-            break;
-        int q=pickloc(put1-'0',l1,n);
-        int p=pickloc(put2-'0',l2,m);
+        int q=pickloc(put1,l1,n);
+        int p=pickloc(put2,l2,m);
         g[q][p]=1;
     }
 }
@@ -58,7 +59,6 @@ void createlist(int &n,int &m,int **&g)
 bool DC_check(int **g,int n,int m)    //检测对称性
 {
     int i=0,j=0;
-    bool flag[6]={false};
     for(i=0;i<n;i++)
     {
         for(j=0;j<m;j++)
@@ -74,12 +74,12 @@ bool DC_check(int **g,int n,int m)    //检测对称性
 
 bool ZF_check(int **g,int n,int m)    //检测自反性
 {
-    int i,flag=0;
+    int i,flag=0;   //flag用于检测是否关系中的每一个元素都有自反关系
     if(m>n) n=m;
     for(i=0;i<n;i++)
     {
         if(g[i][i]==1)
-            flag++;
+            flag++; //当检测到一个自反的关系时，flag+1
     }
     if(flag==n)
         return true;
@@ -89,7 +89,7 @@ bool ZF_check(int **g,int n,int m)    //检测自反性
 
 bool CD_check(int **g,int n,int m)    //检测传递性
 {
-    int i,j,t;
+    int i,j,t;  //i代表当前的元素下标，j代表遍历中和i有关系的元素的下标，t是和j有关系的元素的下标
     for(i=0;i<n;i++)
         for(j=0;j<m;j++)
             if(g[i][j]==1 && i!=j)
